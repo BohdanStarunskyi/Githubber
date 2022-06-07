@@ -1,5 +1,5 @@
 package com.example.testtask.ui.main.interfaces
 
-interface RecyclerViewOnClick {
+interface MainRVOnClick {
     fun onClick(nickname: String, profilePicture: String)
 }

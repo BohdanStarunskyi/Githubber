@@ -16,8 +16,8 @@ class MainRecyclerViewAdapter (private val userModel: UserModel?, private val ma
     RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val nickname: TextView = view.findViewById(R.id.nickname)
-        val profilePicture: ImageView = view.findViewById(R.id.profile_picture)
+        val nickname: TextView = view.findViewById(R.id.tv_nickname)
+        val profilePicture: ImageView = view.findViewById(R.id.iv_profile_picture)
     }
 
 

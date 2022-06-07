@@ -10,11 +10,11 @@ import androidx.navigation.findNavController
 import com.example.testtask.R
 import com.example.testtask.databinding.FragmentMainBinding
 import com.example.testtask.ui.main.adapter.MainRecyclerViewAdapter
-import com.example.testtask.ui.main.interfaces.RecyclerViewOnClick
+import com.example.testtask.ui.main.interfaces.MainRVOnClick
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainFragment : Fragment(), RecyclerViewOnClick {
+class MainFragment : Fragment(), MainRVOnClick {
     private lateinit var binding: FragmentMainBinding
     private lateinit var mainViewModel: MainViewModel
     private val bundle = Bundle()
