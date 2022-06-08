@@ -1,5 +1,6 @@
 package com.example.testtask.ui.detail
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,7 +32,11 @@ class DetailViewModel @Inject constructor(private val gitHubApi: GitHubApi): Vie
                     userRepositories.postValue(null)
                 }
             })
+            RepositoryDatabaseOperations().insertRepository("dsa", "ads", 1, "ekd")
+            Log.d("TAG", "requestRepositories: " + RepositoryDatabaseOperations().retrieveRepositories()[0].html_url)
+
         }
+
     }
 
     fun getUserRepositories():LiveData<RepositoryModel?>{

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -46,9 +47,10 @@ class DetailFragment : Fragment(), DetailRVOnClick {
             .into(binding.ivProfilePicture)
         detailViewModel.requestRepositories(name)
         detailViewModel.getUserRepositories().observe(viewLifecycleOwner) {
-            it.let {
+            if(it == null)
+                Toast.makeText(requireContext(), "null", Toast.LENGTH_SHORT).show()
+            else
                 binding.rvDetail.adapter = DetailRecyclerViewAdapter(it, this)
-            }
         }
     }
 

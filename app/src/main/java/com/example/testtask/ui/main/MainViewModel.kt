@@ -16,12 +16,30 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi): ViewModel() {
     private val users = MutableLiveData<UserModel?>()
+    private val userModel = UserModel()
     fun getUsersFromApi(){
         viewModelScope.launch {
                 gitHubApi.getUsers().enqueue(object : Callback<UserModel> {
                     override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
                         val user = response.body()
                         users.postValue(user)
+                        viewModelScope.launch {
+                            for (i in 0 until user!!.size) {
+                                try {
+                                    UserDatabaseOperations().updateRepository(
+                                        username = user[i].login,
+                                        imageUrl = user[i].avatar_url
+                                    )
+                                } catch (e: Exception) {
+                                    UserDatabaseOperations().insertRepository(
+                                        username = user[i].login,
+                                        imageUrl = user[i].avatar_url,
+                                        i.toString()
+                                    )
+                                }
+                            }
+
+                        }
                     }
 
                     override fun onFailure(call: Call<UserModel>, t: Throwable) {
@@ -29,6 +47,9 @@ class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi): ViewM
                     }
                 })
         }
+
+
+
     }
 
     fun getUsers(): LiveData<UserModel?>{return users}
