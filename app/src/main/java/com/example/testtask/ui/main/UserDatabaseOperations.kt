@@ -1,25 +1,25 @@
 package com.example.testtask.ui.main
 
+
+import com.example.testtask.model.user.UserModel
 import com.example.testtask.model.user.UserModelItem
 import com.example.testtask.model.user.UserRealm
-
-
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.RealmResults
 
 
-class UserDatabaseOperations{
-    suspend fun insertRepository(
+class UserDatabaseOperations {
+    private val config = RealmConfiguration.Builder(schema = setOf(UserRealm::class)).build()
+    private val realm = Realm.open(config)
+
+    fun insertRepository(
         username: String,
         imageUrl: String,
         id: String
     ) {
-        val config = RealmConfiguration.Builder(schema = setOf(UserRealm::class))
-            .build()
-        val realm: Realm = Realm.open(config)
-        realm.write {
+        realm.writeBlocking {
             copyToRealm(UserRealm().apply {
                 this.id = id
                 this.username = username
@@ -30,30 +30,25 @@ class UserDatabaseOperations{
         }
     }
 
-    suspend fun updateRepository(username: String,
-                                 imageUrl: String){
-        val config = RealmConfiguration.Builder(schema = setOf(UserRealm::class))
-            .build()
-        val realm = Realm.open(config)
-        realm.write {
+    fun updateRepository(
+        username: String,
+        imageUrl: String
+    ) {
+        realm.writeBlocking {
             val user: UserRealm? = query<UserRealm>()
                 .first()
                 .find()
-            // update the frog's properties
             user?.apply {
                 this.username = username
                 this.imageUrl = imageUrl
             }
-        } // when the transaction completes, the frog's name and species
-// are updated in the database
+        }
     }
 
-    fun retrieveRepositories(): ArrayList<UserModelItem> {
-        val config = RealmConfiguration.Builder(schema = setOf(UserRealm::class))
-            .build()
-        val realm: Realm = Realm.open(config)
+    fun retrieveRepositories(): UserModel {
+        val userModel = UserModel()
         val tasks: RealmResults<UserRealm> = realm.query<UserRealm>().find()
-        val list = arrayListOf<UserModelItem>()
+        val list = ArrayList<UserModelItem>()
         tasks.forEach { user ->
             list.add(
                 UserModelItem(
@@ -62,7 +57,10 @@ class UserDatabaseOperations{
                 )
             )
         }
-        return list
+        for (i in 0 until list.size) {
+            userModel.add(list[i])
+        }
+        return userModel
     }
 
 }

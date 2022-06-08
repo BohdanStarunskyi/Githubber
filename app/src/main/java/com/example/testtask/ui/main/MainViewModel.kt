@@ -14,43 +14,58 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi): ViewModel() {
+class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi) : ViewModel() {
     private val users = MutableLiveData<UserModel?>()
-    private val userModel = UserModel()
-    fun getUsersFromApi(){
+    private val userDatabaseOperations = UserDatabaseOperations()
+    private var userModel = UserModel()
+
+    init {
+        requestUsersFromDatabase()
+    }
+
+    fun getUsersFromApi() {
         viewModelScope.launch {
-                gitHubApi.getUsers().enqueue(object : Callback<UserModel> {
-                    override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
-                        val user = response.body()
-                        users.postValue(user)
-                        viewModelScope.launch {
+            gitHubApi.getUsers().enqueue(object : Callback<UserModel> {
+                override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
+                    val user = response.body()
+                    users.postValue(user)
+                    viewModelScope.launch {
+                        if (userDatabaseOperations.retrieveRepositories().size == 0){
                             for (i in 0 until user!!.size) {
-                                try {
-                                    UserDatabaseOperations().updateRepository(
-                                        username = user[i].login,
-                                        imageUrl = user[i].avatar_url
-                                    )
-                                } catch (e: Exception) {
-                                    UserDatabaseOperations().insertRepository(
-                                        username = user[i].login,
-                                        imageUrl = user[i].avatar_url,
-                                        i.toString()
-                                    )
-                                }
+                                userDatabaseOperations.insertRepository(
+                                    username = user[i].login,
+                                    imageUrl = user[i].avatar_url,
+                                    id = i.toString()
+                                )
                             }
-
+                        } else{
+                            for (i in 0 until user!!.size) {
+                                userDatabaseOperations.updateRepository(
+                                    username = user[i].login,
+                                    imageUrl = user[i].avatar_url
+                                )
+                            }
                         }
-                    }
 
-                    override fun onFailure(call: Call<UserModel>, t: Throwable) {
-                        users.postValue(null)
+                        requestUsersFromDatabase()
                     }
-                })
+                }
+
+                override fun onFailure(call: Call<UserModel>, t: Throwable) {
+                    requestUsersFromDatabase()
+                }
+            })
         }
-
 
 
     }
 
-    fun getUsers(): LiveData<UserModel?>{return users}
+    fun requestUsersFromDatabase() {
+        userModel = userDatabaseOperations.retrieveRepositories()
+        users.postValue(userModel)
+    }
+
+    fun getUsers(): LiveData<UserModel?> {
+        return users
+    }
 }
