@@ -14,7 +14,7 @@ class UserDatabaseOperations {
     private val config = RealmConfiguration.Builder(schema = setOf(UserRealm::class)).build()
     private val realm = Realm.open(config)
 
-    fun insertRepository(
+    fun insertUser(
         username: String,
         imageUrl: String,
         id: String
@@ -30,14 +30,13 @@ class UserDatabaseOperations {
         }
     }
 
-    fun updateRepository(
+    fun updateUser(
         username: String,
-        imageUrl: String
+        imageUrl: String,
+        id: String
     ) {
         realm.writeBlocking {
-            val user: UserRealm? = query<UserRealm>()
-                .first()
-                .find()
+            val user: UserRealm? = query<UserRealm>("id == $0", id).first().find()
             user?.apply {
                 this.username = username
                 this.imageUrl = imageUrl
@@ -45,7 +44,7 @@ class UserDatabaseOperations {
         }
     }
 
-    fun retrieveRepositories(): UserModel {
+    fun retrieveUsers(): UserModel {
         val userModel = UserModel()
         val tasks: RealmResults<UserRealm> = realm.query<UserRealm>().find()
         val list = ArrayList<UserModelItem>()

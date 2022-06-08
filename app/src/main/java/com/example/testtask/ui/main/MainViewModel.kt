@@ -30,9 +30,9 @@ class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi) : View
                     val user = response.body()
                     users.postValue(user)
                     viewModelScope.launch {
-                        if (userDatabaseOperations.retrieveRepositories().size == 0){
+                        if (userDatabaseOperations.retrieveUsers().size == 0){
                             for (i in 0 until user!!.size) {
-                                userDatabaseOperations.insertRepository(
+                                userDatabaseOperations.insertUser(
                                     username = user[i].login,
                                     imageUrl = user[i].avatar_url,
                                     id = i.toString()
@@ -40,9 +40,10 @@ class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi) : View
                             }
                         } else{
                             for (i in 0 until user!!.size) {
-                                userDatabaseOperations.updateRepository(
+                                userDatabaseOperations.updateUser(
                                     username = user[i].login,
-                                    imageUrl = user[i].avatar_url
+                                    imageUrl = user[i].avatar_url,
+                                    id = i.toString()
                                 )
                             }
                         }
@@ -61,7 +62,7 @@ class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi) : View
     }
 
     fun requestUsersFromDatabase() {
-        userModel = userDatabaseOperations.retrieveRepositories()
+        userModel = userDatabaseOperations.retrieveUsers()
         users.postValue(userModel)
     }
 

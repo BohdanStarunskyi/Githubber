@@ -32,8 +32,6 @@ class DetailViewModel @Inject constructor(private val gitHubApi: GitHubApi): Vie
                     userRepositories.postValue(null)
                 }
             })
-            RepositoryDatabaseOperations().insertRepository("dsa", "ads", 1, "ekd")
-            Log.d("TAG", "requestRepositories: " + RepositoryDatabaseOperations().retrieveRepositories()[0].html_url)
 
         }
 
