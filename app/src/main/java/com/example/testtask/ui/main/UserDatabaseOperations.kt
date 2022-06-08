@@ -52,7 +52,8 @@ class UserDatabaseOperations {
             list.add(
                 UserModelItem(
                     login = user.username,
-                    avatar_url = user.imageUrl
+                    avatar_url = user.imageUrl,
+                    id = user.id.toInt()
                 )
             )
         }

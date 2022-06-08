@@ -41,9 +41,10 @@ class MainFragment : Fragment(), MainRVOnClick {
         }
     }
 
-    override fun onClick(nickname: String, profilePicture: String) {
+    override fun onClick(nickname: String, profilePicture: String, id: Int?) {
         bundle.putSerializable("name", nickname)
         bundle.putSerializable("picture", profilePicture)
+        bundle.putSerializable("id", id)
         requireActivity().findNavController(R.id.fragment_container).navigate(R.id.action_mainFragment_to_detailFragment, bundle)
 
     }

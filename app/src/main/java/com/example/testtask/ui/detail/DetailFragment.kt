@@ -30,24 +30,25 @@ class DetailFragment : Fragment(), DetailRVOnClick {
         detailViewModel = ViewModelProvider(this)[DetailViewModel::class.java]
         name = arguments?.getSerializable("name") as String
         avatarUrl = arguments?.getSerializable("picture") as String
+        val id = arguments?.getSerializable("id") as Int?
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        detailViewModel.getRepositoriesFromApi(name)
         init()
     }
 
-    private fun init(){
+    private fun init() {
         binding.tvUsername.text = name
         Glide.with(requireContext())
             .load(avatarUrl)
             .placeholder(R.drawable.profile_placeeholder)
             .centerCrop()
             .into(binding.ivProfilePicture)
-        detailViewModel.requestRepositories(name)
         detailViewModel.getUserRepositories().observe(viewLifecycleOwner) {
-            if(it == null)
+            if (it == null)
                 Toast.makeText(requireContext(), "null", Toast.LENGTH_SHORT).show()
             else
                 binding.rvDetail.adapter = DetailRecyclerViewAdapter(it, this)

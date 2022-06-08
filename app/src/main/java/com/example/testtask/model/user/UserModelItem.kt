@@ -8,7 +8,7 @@ data class UserModelItem(
     var gists_url: String? = null,
     var gravatar_id: String? = null,
     var html_url: String? = null,
-    var id: Int? = null,
+    val id: Int,
     val login: String,
     var node_id: String? = null,
     var organizations_url: String? = null,

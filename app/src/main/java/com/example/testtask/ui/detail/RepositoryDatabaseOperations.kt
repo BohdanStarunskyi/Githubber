@@ -1,10 +1,8 @@
 package com.example.testtask.ui.detail
 
+import com.example.testtask.model.repository.RepositoryModel
 import com.example.testtask.model.repository.RepositoryModelItem
 import com.example.testtask.model.repository.RepositoryRealm
-import com.example.testtask.model.user.UserModel
-import com.example.testtask.model.user.UserModelItem
-import com.example.testtask.model.user.UserRealm
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query
@@ -12,19 +10,23 @@ import io.realm.kotlin.query.RealmResults
 
 open class RepositoryDatabaseOperations {
 
-    private val config = RealmConfiguration.Builder(schema = setOf(UserRealm::class)).build()
+    private val config = RealmConfiguration.Builder(schema = setOf(RepositoryRealm::class)).build()
     private val realm = Realm.open(config)
 
     fun insertRepository(
-        username: String,
-        imageUrl: String,
-        id: String
+        id: String,
+        repositoryName: String,
+        programmingLanguage: String?,
+        starCount: Int,
+        url: String
     ) {
         realm.writeBlocking {
-            copyToRealm(UserRealm().apply {
+            copyToRealm(RepositoryRealm().apply {
                 this.id = id
-                this.username = username
-                this.imageUrl = imageUrl
+                this.repositoryName = repositoryName
+                this.programmingLanguage = programmingLanguage
+                this.starCount = starCount
+                this.url = url
             })
 
 
@@ -32,36 +34,41 @@ open class RepositoryDatabaseOperations {
     }
 
     fun updateRepository(
-        username: String,
-        imageUrl: String
+        id: String,
+        repositoryName: String,
+        programmingLanguage: String?,
+        starCount: Int,
+        url: String
     ) {
         realm.writeBlocking {
-            val user: UserRealm? = query<UserRealm>()
-                .first()
-                .find()
+            val user: RepositoryRealm? =  query<RepositoryRealm>("id == $0", id).first().find()
             user?.apply {
-                this.username = username
-                this.imageUrl = imageUrl
+                this.repositoryName = repositoryName
+                this.programmingLanguage = programmingLanguage
+                this.starCount = starCount
+                this.url = url
             }
         }
     }
 
-    fun retrieveRepositories(): UserModel {
-        val userModel = UserModel()
-        val tasks: RealmResults<UserRealm> = realm.query<UserRealm>().find()
-        val list = ArrayList<UserModelItem>()
-        tasks.forEach { user ->
+    fun retrieveRepositories(): RepositoryModel {
+        val repositoryModel = RepositoryModel()
+        val tasks: RealmResults<RepositoryRealm> = realm.query<RepositoryRealm>().find()
+        val list = ArrayList<RepositoryModelItem>()
+        tasks.forEach { repository ->
             list.add(
-                UserModelItem(
-                    login = user.username,
-                    avatar_url = user.imageUrl
+                RepositoryModelItem(
+                    name = repository.repositoryName,
+                    language = repository.programmingLanguage,
+                    stargazers_count = repository.starCount,
+                    html_url = repository.url
                 )
             )
         }
         for (i in 0 until list.size) {
-            userModel.add(list[i])
+            repositoryModel.add(list[i])
         }
-        return userModel
+        return repositoryModel
     }
 
 }

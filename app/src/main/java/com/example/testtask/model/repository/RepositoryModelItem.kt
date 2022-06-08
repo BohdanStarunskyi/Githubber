@@ -45,7 +45,7 @@ data class RepositoryModelItem(
     var issues_url: String? = null,
     var keys_url: String? = null,
     var labels_url: String? = null,
-    val language: String,
+    val language: String?,
     var languages_url: String? = null,
     var license: License? = null,
     var merges_url: String? = null,

@@ -29,9 +29,10 @@ class MainRecyclerViewAdapter (private val userModel: UserModel?, private val ma
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val name = userModel!![position].login
         val avatarUrl = userModel[position].avatar_url
+        val id = userModel[position].id
         holder.nickname.text = name
         holder.itemView.setOnClickListener {
-            mainFragment.onClick(name, avatarUrl)
+            mainFragment.onClick(name, avatarUrl, id)
         }
         Glide.with(mainFragment.requireContext())
             .load(avatarUrl)

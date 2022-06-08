@@ -7,7 +7,7 @@ import io.realm.kotlin.types.annotations.PrimaryKey
      @PrimaryKey
      var id: String = ""
      var repositoryName: String = ""
-     var programmingLanguage: String = ""
+     var programmingLanguage: String? = ""
      var starCount: Int = 0
      var url: String = ""
  }
