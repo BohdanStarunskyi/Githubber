@@ -37,7 +37,9 @@ class MainFragment : Fragment(), MainRVOnClick {
 
     private fun init() {
         mainViewModel.getUsers().observe(viewLifecycleOwner) {
-            binding.rvMainFragment.adapter = MainRecyclerViewAdapter(it, this)
+            if (it!!.size != 0)
+             binding.rvMainFragment.adapter = MainRecyclerViewAdapter(it, this)
+
         }
     }
 

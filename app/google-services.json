@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "846010814491",
+    "project_id": "githubber-f57cf",
+    "storage_bucket": "githubber-f57cf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846010814491:android:19d626d5a516e8b90c28be",
+        "android_client_info": {
+          "package_name": "com.example.githubber"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "846010814491-juru5o9cq2telb52jfvhjj90kmd330tf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqwUsUmLgyT_MN1oqBPDVuhKthXmk1wfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846010814491-juru5o9cq2telb52jfvhjj90kmd330tf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -48,9 +48,7 @@ class DetailFragment : Fragment(), DetailRVOnClick {
             .centerCrop()
             .into(binding.ivProfilePicture)
         detailViewModel.getUserRepositories().observe(viewLifecycleOwner) {
-            if (it == null)
-                Toast.makeText(requireContext(), "null", Toast.LENGTH_SHORT).show()
-            else
+            if (it!!.size != 0)
                 binding.rvDetail.adapter = DetailRecyclerViewAdapter(it, this)
         }
     }
