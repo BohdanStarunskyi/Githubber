@@ -28,8 +28,6 @@ open class RepositoryDatabaseOperations {
                 this.starCount = starCount
                 this.url = url
             })
-
-
         }
     }
 

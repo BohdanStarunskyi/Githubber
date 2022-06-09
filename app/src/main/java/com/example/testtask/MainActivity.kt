@@ -1,26 +1,37 @@
 package com.example.testtask
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
+import androidx.appcompat.app.AppCompatActivity
+import com.example.testtask.ui.main.UserDatabaseOperations
+import com.example.testtask.utils.ACTION
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private val mHandler = MyBroadcast()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                return@OnCompleteListener
-            }
-            val token = task.result
-            Log.d("TAG", "onCreate: $token")
-
-        })
+        registerReceiver(mHandler, IntentFilter(ACTION))
     }
 
+    class MyBroadcast: BroadcastReceiver(){
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val userId = p1!!.getStringExtra("userId")!!
+            val changesCount = p1.getIntExtra("changesCount", 0)
+            UserDatabaseOperations().updateUserChanges(userId, changesCount)
+        }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(mHandler)
+    }
 }
+

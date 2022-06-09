@@ -25,8 +25,6 @@ class UserDatabaseOperations {
                 this.username = username
                 this.imageUrl = imageUrl
             })
-
-
         }
     }
 
@@ -44,6 +42,19 @@ class UserDatabaseOperations {
         }
     }
 
+    fun updateUserChanges(
+        id: String,
+        changesCount: Int
+    ) {
+        realm.writeBlocking {
+            val user: UserRealm? = query<UserRealm>("id == $0", id).first().find()
+            user?.apply {
+                this.changesCount = changesCount
+            }
+        }
+    }
+
+
     fun retrieveUsers(): UserModel {
         val userModel = UserModel()
         val tasks: RealmResults<UserRealm> = realm.query<UserRealm>().find()
@@ -53,7 +64,8 @@ class UserDatabaseOperations {
                 UserModelItem(
                     login = user.username,
                     avatar_url = user.imageUrl,
-                    id = user.id.toInt()
+                    id = user.id.toInt(),
+                    changesCount = user.changesCount
                 )
             )
         }

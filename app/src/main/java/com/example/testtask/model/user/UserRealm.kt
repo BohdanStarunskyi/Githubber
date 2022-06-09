@@ -8,5 +8,6 @@ import io.realm.kotlin.types.annotations.PrimaryKey
      var id: String = ""
      var username: String = ""
      var imageUrl: String = ""
+     var changesCount: Int = 0
  }
 

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.testtask.R
@@ -18,6 +19,8 @@ class MainRecyclerViewAdapter (private val userModel: UserModel?, private val ma
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nickname: TextView = view.findViewById(R.id.tv_nickname)
         val profilePicture: ImageView = view.findViewById(R.id.iv_profile_picture)
+        val redDot: ConstraintLayout = view.findViewById(R.id.red_dot)
+        val redDotText: TextView  = view.findViewById(R.id.red_dot_text)
     }
 
 
@@ -30,6 +33,12 @@ class MainRecyclerViewAdapter (private val userModel: UserModel?, private val ma
         val name = userModel!![position].login
         val avatarUrl = userModel[position].avatar_url
         val id = userModel[position].id
+        val changesCount = userModel[position].changesCount
+        if (changesCount != 0){
+            holder.redDot.visibility = View.VISIBLE
+            holder.redDotText.text = changesCount.toString()
+        } else
+            holder.redDot.visibility = View.GONE
         holder.nickname.text = name
         holder.itemView.setOnClickListener {
             mainFragment.onClick(name, avatarUrl, id)

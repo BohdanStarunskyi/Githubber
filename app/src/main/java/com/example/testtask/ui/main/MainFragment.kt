@@ -17,7 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainFragment : Fragment(), MainRVOnClick {
     private lateinit var binding: FragmentMainBinding
     private lateinit var mainViewModel: MainViewModel
-    private val bundle = Bundle()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,18 +36,19 @@ class MainFragment : Fragment(), MainRVOnClick {
 
     private fun init() {
         mainViewModel.getUsers().observe(viewLifecycleOwner) {
-            if (it!!.size != 0)
-             binding.rvMainFragment.adapter = MainRecyclerViewAdapter(it, this)
-
+            if (it!!.size != 0) {
+                binding.rvMainFragment.adapter = MainRecyclerViewAdapter(it, this)
+                binding.noData.visibility = View.INVISIBLE
+            }
         }
     }
 
     override fun onClick(nickname: String, profilePicture: String, id: Int?) {
+        val bundle = Bundle()
         bundle.putSerializable("name", nickname)
         bundle.putSerializable("picture", profilePicture)
-        bundle.putSerializable("id", id)
-        requireActivity().findNavController(R.id.fragment_container).navigate(R.id.action_mainFragment_to_detailFragment, bundle)
-
+        requireActivity().findNavController(R.id.fragment_container)
+            .navigate(R.id.action_mainFragment_to_detailFragment, bundle)
     }
 
 }

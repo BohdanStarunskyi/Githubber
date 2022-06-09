@@ -1,9 +1,11 @@
 package com.example.testtask.model.repository
 
+import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
- class RepositoryRealm: RealmObject {
+
+class RepositoryRealm: RealmObject {
      @PrimaryKey
      var id: String = ""
      var repositoryName: String = ""

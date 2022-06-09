@@ -8,4 +8,5 @@
     <string name="date">07.06.2022</string>
     <string name="text_placeholder">265</string>
     <string name="kotlin">Kotlin</string>
+    <string name="number_placeholder">5</string>
 </resources>

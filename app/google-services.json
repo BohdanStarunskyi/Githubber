@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "846010814491",
-    "project_id": "githubber-f57cf",
-    "storage_bucket": "githubber-f57cf.appspot.com"
+    "project_number": "245194762573",
+    "project_id": "githubber-af46a",
+    "storage_bucket": "githubber-af46a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:846010814491:android:19d626d5a516e8b90c28be",
+        "mobilesdk_app_id": "1:245194762573:android:31a27a7874bd5d99e9ef04",
         "android_client_info": {
-          "package_name": "com.example.githubber"
+          "package_name": "com.example.testtask"
         }
       },
       "oauth_client": [
         {
-          "client_id": "846010814491-juru5o9cq2telb52jfvhjj90kmd330tf.apps.googleusercontent.com",
+          "client_id": "245194762573-k4qbdbh2hd0ectp5crp3kgq843c1i0bf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDqwUsUmLgyT_MN1oqBPDVuhKthXmk1wfc"
+          "current_key": "AIzaSyD8DYRbtMJ_xkiNshHc0E3t40FYc03tNZ8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "846010814491-juru5o9cq2telb52jfvhjj90kmd330tf.apps.googleusercontent.com",
+              "client_id": "245194762573-k4qbdbh2hd0ectp5crp3kgq843c1i0bf.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        app:cardCornerRadius="15dp"
-        android:layout_marginHorizontal="15dp"
-        android:layout_marginVertical="5dp"
-        app:cardElevation="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="5dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,14 +22,44 @@
             android:layout_height="match_parent"
             android:layout_margin="15dp">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:visibility="gone"
+                android:id="@+id/red_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/red_dot_image"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/circle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/red_dot_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_placeholder"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/red_dot"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/red_dot"
+                    app:layout_constraintTop_toTopOf="@+id/red_dot" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.cardview.widget.CardView
-                app:cardCornerRadius="10dp"
                 android:id="@+id/cv_image_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
+
                 <ImageView
                     android:id="@+id/iv_profile_picture"
                     android:layout_width="90dp"
@@ -37,11 +67,11 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:textSize="20sp"
                 android:id="@+id/tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/nickname"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/cv_image_container"
