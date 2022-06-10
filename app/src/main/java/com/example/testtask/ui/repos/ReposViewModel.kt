@@ -51,9 +51,6 @@ class ReposViewModel @Inject constructor(private val gitHubApi: GitHubApi) : Vie
                 }
 
                 override fun onFailure(call: Call<RepositoryModel>, t: Throwable) {
-                    if (repositoryDatabaseOperations.retrieveRepositories().size == 0)
-                        requestRepositoriesFromApi(username)
-                    else
                         requestRepositoriesFromDatabase()
                 }
             })

@@ -44,9 +44,6 @@ class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi) : View
                 }
 
                 override fun onFailure(call: Call<UserModel>, t: Throwable) {
-                    if (userDatabaseOperations.retrieveUsers().size == 0)
-                        requestUsersFromApi()
-                    else
                         requestUsersFromDatabase()
                 }
             })
