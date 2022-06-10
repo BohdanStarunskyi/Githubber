@@ -53,9 +53,11 @@ class ReposFragment : Fragment(), ReposOnClick {
             .into(binding.ivProfilePicture)
 
         reposViewModel.getUserRepositories().observe(viewLifecycleOwner) {
-            if (it!!.size != 0) {
-                binding.rvRepos.adapter = ReposRecyclerViewAdapter(it, this)
-                binding.noData.visibility = View.INVISIBLE
+            it.let {
+                if (it!!.size != 0) {
+                    binding.rvRepos.adapter = ReposRecyclerViewAdapter(it, this)
+                    binding.noData.visibility = View.INVISIBLE
+                }
             }
         }
     }

@@ -12,25 +12,7 @@ open class RepositoryDatabaseOperations {
     private val config = RealmConfiguration.Builder(schema = setOf(RepositoryRealm::class)).build()
     private val realm = Realm.open(config)
 
-    suspend fun insertRepository(
-        id: String,
-        repositoryName: String,
-        programmingLanguage: String?,
-        starCount: Int,
-        url: String
-    ) {
-        realm.write {
-            copyToRealm(RepositoryRealm().apply {
-                this.id = id
-                this.repositoryName = repositoryName
-                this.programmingLanguage = programmingLanguage
-                this.starCount = starCount
-                this.url = url
-            })
-        }
-    }
-
-    suspend fun updateRepository(
+    suspend fun updateOrCreateRepository(
         id: String,
         repositoryName: String,
         programmingLanguage: String?,
@@ -39,11 +21,19 @@ open class RepositoryDatabaseOperations {
     ) {
         realm.write {
             val user: RepositoryRealm? = query<RepositoryRealm>("id == $0", id).first().find()
-            user?.apply {
-                this.repositoryName = repositoryName
-                this.programmingLanguage = programmingLanguage
-                this.starCount = starCount
-                this.url = url
+            if (user != null) {
+                user.repositoryName = repositoryName
+                user.programmingLanguage = programmingLanguage
+                user.starCount = starCount
+                user.url = url
+            } else {
+                copyToRealm(RepositoryRealm().apply {
+                    this.id = id
+                    this.repositoryName = repositoryName
+                    this.programmingLanguage = programmingLanguage
+                    this.starCount = starCount
+                    this.url = url
+                })
             }
         }
     }

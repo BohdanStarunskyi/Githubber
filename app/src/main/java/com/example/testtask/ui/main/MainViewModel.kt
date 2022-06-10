@@ -31,10 +31,12 @@ class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi) : View
                     val user = response.body()
                     viewModelScope.launch {
                         kotlin.runCatching {
-                            if (userDatabaseOperations.retrieveUsers().size == 0) {
-                                insertUser(user)
-                            } else {
-                                updateUser(user)
+                            for (i in 0 until user!!.size) {
+                                userDatabaseOperations.updateOrCreateUser(
+                                    username = user[i].login,
+                                    imageUrl = user[i].avatar_url,
+                                    id = i.toString()
+                                )
                             }
                         }
                         requestUsersFromDatabase()
@@ -48,26 +50,6 @@ class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi) : View
                         requestUsersFromDatabase()
                 }
             })
-        }
-    }
-
-    suspend fun insertUser(user: UserModel?) {
-        for (i in 0 until user!!.size) {
-            userDatabaseOperations.insertUser(
-                username = user[i].login,
-                imageUrl = user[i].avatar_url,
-                id = i.toString()
-            )
-        }
-    }
-
-    suspend fun updateUser(user: UserModel?) {
-        for (i in 0 until user!!.size) {
-            userDatabaseOperations.updateUser(
-                username = user[i].login,
-                imageUrl = user[i].avatar_url,
-                id = i.toString()
-            )
         }
     }
 

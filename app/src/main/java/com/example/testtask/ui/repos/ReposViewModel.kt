@@ -33,14 +33,20 @@ class ReposViewModel @Inject constructor(private val gitHubApi: GitHubApi) : Vie
                 ) {
                     val repository = response.body()
                     userRepositories.postValue(repository)
+                    if(response.code() == 200){
                     viewModelScope.launch {
                         kotlin.runCatching {
-                            if (repositoryDatabaseOperations.retrieveRepositories().size == 0)
-                                insertRepository(repository)
-                            else
-                                updateRepository(repository)
+                            for (i in 0 until repository!!.size) {
+                                repositoryDatabaseOperations.updateOrCreateRepository(
+                                    id = i.toString(),
+                                    repositoryName = repository[i].name,
+                                    programmingLanguage = repository[i].language,
+                                    starCount = repository[i].stargazers_count,
+                                    url = repository[i].html_url
+                                )
+                            }
                         }
-                        requestRepositoriesFromDatabase()
+                    }
                     }
                 }
 
@@ -52,30 +58,6 @@ class ReposViewModel @Inject constructor(private val gitHubApi: GitHubApi) : Vie
                 }
             })
 
-        }
-    }
-
-    suspend fun insertRepository(repository: RepositoryModel?) {
-        for (i in 0 until repository!!.size) {
-            repositoryDatabaseOperations.insertRepository(
-                id = i.toString(),
-                repositoryName = repository[i].name,
-                programmingLanguage = repository[i].language,
-                starCount = repository[i].stargazers_count,
-                url = repository[i].html_url
-            )
-        }
-    }
-
-    suspend fun updateRepository(repository: RepositoryModel?) {
-        for (i in 0 until repository!!.size) {
-            repositoryDatabaseOperations.updateRepository(
-                id = i.toString(),
-                repositoryName = repository[i].name,
-                programmingLanguage = repository[i].language,
-                starCount = repository[i].stargazers_count,
-                url = repository[i].html_url
-            )
         }
     }
 

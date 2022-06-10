@@ -14,31 +14,23 @@ class UserDatabaseOperations {
     private val config = RealmConfiguration.Builder(schema = setOf(UserRealm::class)).build()
     private val realm = Realm.open(config)
 
-    suspend fun insertUser(
-        username: String,
-        imageUrl: String,
-        id: String
-    ) {
-        realm.write {
-            copyToRealm(UserRealm().apply {
-                this.id = id
-                this.username = username
-                this.imageUrl = imageUrl
-                this.changesCount = 0
-            })
-        }
-    }
-
-    suspend fun updateUser(
+    suspend fun updateOrCreateUser(
         username: String,
         imageUrl: String,
         id: String
     ) {
         realm.write {
             val user: UserRealm? = query<UserRealm>("id == $0", id).first().find()
-            user?.apply {
-                this.username = username
-                this.imageUrl = imageUrl
+            if (user != null) {
+                user.username = username
+                user.imageUrl = imageUrl
+            } else {
+                this.copyToRealm(UserRealm().apply {
+                    this.id = id
+                    this.username = username
+                    this.imageUrl = imageUrl
+                    this.changesCount = 0
+                })
             }
         }
     }
