@@ -13,7 +13,6 @@ open class RepositoryDatabaseOperations {
     private val realm = Realm.open(config)
 
     suspend fun updateOrCreateRepository(
-        id: String,
         repositoryName: String,
         programmingLanguage: String?,
         starCount: Int,
@@ -21,7 +20,7 @@ open class RepositoryDatabaseOperations {
         username: String
     ) {
         realm.write {
-            val user: RepositoryRealm? = query<RepositoryRealm>("id == $0", id).first().find()
+            val user: RepositoryRealm? = query<RepositoryRealm>("url == $0", url).first().find()
             if (user != null) {
                 user.repositoryName = repositoryName
                 user.programmingLanguage = programmingLanguage
@@ -29,7 +28,6 @@ open class RepositoryDatabaseOperations {
                 user.url = url
             } else {
                 copyToRealm(RepositoryRealm().apply {
-                    this.id = id
                     this.repositoryName = repositoryName
                     this.programmingLanguage = programmingLanguage
                     this.starCount = starCount
@@ -38,27 +36,6 @@ open class RepositoryDatabaseOperations {
                 })
             }
         }
-    }
-
-    fun retrieveRepositories(): Int {
-        val repositoryModel = RepositoryModel()
-        val tasks: RealmResults<RepositoryRealm> = realm.query<RepositoryRealm>().find()
-        val list = ArrayList<RepositoryModelItem>()
-        tasks.forEach { repository ->
-            list.add(
-                RepositoryModelItem(
-                    name = repository.repositoryName,
-                    language = repository.programmingLanguage,
-                    stargazers_count = repository.starCount,
-                    html_url = repository.url,
-                    username = repository.username
-                )
-            )
-        }
-        for (i in 0 until list.size) {
-            repositoryModel.add(list[i])
-        }
-        return repositoryModel.size
     }
 
     fun retrieveRepositoriesByUsername(

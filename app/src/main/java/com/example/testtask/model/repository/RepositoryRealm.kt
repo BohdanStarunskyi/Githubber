@@ -6,10 +6,9 @@ import io.realm.kotlin.types.annotations.PrimaryKey
 
 class RepositoryRealm : RealmObject {
     @PrimaryKey
-    var id: String = ""
+    var url: String = ""
     var username: String = ""
     var repositoryName: String = ""
     var programmingLanguage: String? = ""
     var starCount: Int = 0
-    var url: String = ""
 }
