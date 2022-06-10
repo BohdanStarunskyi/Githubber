@@ -24,7 +24,7 @@ class MainFragment : Fragment(), MainRVOnClick {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
-        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         return binding.root
     }
 
