@@ -24,6 +24,7 @@ class UserDatabaseOperations {
                 this.id = id
                 this.username = username
                 this.imageUrl = imageUrl
+                this.changesCount = 0
             })
         }
     }

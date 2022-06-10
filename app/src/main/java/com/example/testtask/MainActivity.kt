@@ -22,6 +22,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         mHandler = MyBroadcast(mainViewModel)
+    }
+
+    override fun onStart() {
+        super.onStart()
         registerReceiver(mHandler, IntentFilter(ACTION))
     }
 

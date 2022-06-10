@@ -71,7 +71,8 @@ class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi) : View
     }
 
     fun requestUsersFromDatabase() {
-        userModel = userDatabaseOperations.retrieveUsers()
+        //we have to create new instance of UserDatabaseOperations() to update data after a message received
+        userModel = UserDatabaseOperations().retrieveUsers()
         users.postValue(userModel)
     }
 

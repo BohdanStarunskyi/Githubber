@@ -47,8 +47,12 @@ class MainFragment : Fragment(), MainRVOnClick {
         val bundle = Bundle()
         bundle.putSerializable("name", nickname)
         bundle.putSerializable("picture", profilePicture)
-        requireActivity().findNavController(R.id.fragment_container)
-            .navigate(R.id.action_mainFragment_to_detailFragment, bundle)
+        try {
+            requireActivity().findNavController(R.id.fragment_container)
+                .navigate(R.id.action_mainFragment_to_detailFragment, bundle)
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
 }
