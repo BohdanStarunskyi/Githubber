@@ -18,7 +18,7 @@ class MainRecyclerViewAdapter(
     private val mainFragment: MainFragment
 ) :
     RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
-
+    var user = userModel
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nickname: TextView = view.findViewById(R.id.tv_nickname)
         val profilePicture: ImageView = view.findViewById(R.id.iv_profile_picture)
@@ -33,10 +33,10 @@ class MainRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val name = userModel!![position].login
-        val avatarUrl = userModel[position].avatar_url
-        val id = userModel[position].id
-        val changesCount = userModel[position].changesCount
+        val name = user!![position].login
+        val avatarUrl = user!![position].avatar_url
+        val id = user!![position].id
+        val changesCount = user!![position].changesCount
         if (changesCount != 0) {
             holder.redDot.visibility = View.VISIBLE
             holder.redDotText.text = changesCount.toString()
@@ -54,6 +54,11 @@ class MainRecyclerViewAdapter(
     }
 
     override fun getItemCount(): Int {
-        return userModel!!.size
+        return user!!.size
+    }
+
+    fun updateUsers(userM: UserModel?){
+        user = userM
+        this.notifyDataSetChanged()
     }
 }

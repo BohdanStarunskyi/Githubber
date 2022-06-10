@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.testtask.R
 import com.example.testtask.databinding.FragmentMainBinding
+import com.example.testtask.model.user.UserModel
 import com.example.testtask.ui.main.adapter.MainRecyclerViewAdapter
 import com.example.testtask.ui.main.interfaces.MainRVOnClick
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainFragment : Fragment(), MainRVOnClick {
     private lateinit var binding: FragmentMainBinding
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var recyclerViewAdapter: MainRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,13 +33,15 @@ class MainFragment : Fragment(), MainRVOnClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel.requestUsersFromApi()
+        recyclerViewAdapter = MainRecyclerViewAdapter(UserModel(), this)
+        binding.rvMainFragment.adapter = recyclerViewAdapter
         initObservers()
     }
 
     private fun initObservers() {
         mainViewModel.getUsers().observe(viewLifecycleOwner) {
             if (it!!.size != 0) {
-                binding.rvMainFragment.adapter = MainRecyclerViewAdapter(it, this)
+                recyclerViewAdapter.updateUsers(it)
                 binding.noData.visibility = View.INVISIBLE
             }
         }

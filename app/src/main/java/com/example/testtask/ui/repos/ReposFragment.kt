@@ -36,6 +36,7 @@ class ReposFragment : Fragment(), ReposOnClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
+            reposViewModel.requestRepositoriesFromDatabase(name)
             reposViewModel.requestRepositoriesFromApi(name)
         } catch (e: Exception){
             e.printStackTrace()

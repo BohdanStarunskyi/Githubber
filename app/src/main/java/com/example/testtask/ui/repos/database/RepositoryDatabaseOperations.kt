@@ -17,7 +17,8 @@ open class RepositoryDatabaseOperations {
         repositoryName: String,
         programmingLanguage: String?,
         starCount: Int,
-        url: String
+        url: String,
+        username: String
     ) {
         realm.write {
             val user: RepositoryRealm? = query<RepositoryRealm>("id == $0", id).first().find()
@@ -33,12 +34,13 @@ open class RepositoryDatabaseOperations {
                     this.programmingLanguage = programmingLanguage
                     this.starCount = starCount
                     this.url = url
+                    this.username = username
                 })
             }
         }
     }
 
-    fun retrieveRepositories(): RepositoryModel {
+    fun retrieveRepositories(): Int {
         val repositoryModel = RepositoryModel()
         val tasks: RealmResults<RepositoryRealm> = realm.query<RepositoryRealm>().find()
         val list = ArrayList<RepositoryModelItem>()
@@ -48,7 +50,31 @@ open class RepositoryDatabaseOperations {
                     name = repository.repositoryName,
                     language = repository.programmingLanguage,
                     stargazers_count = repository.starCount,
-                    html_url = repository.url
+                    html_url = repository.url,
+                    username = repository.username
+                )
+            )
+        }
+        for (i in 0 until list.size) {
+            repositoryModel.add(list[i])
+        }
+        return repositoryModel.size
+    }
+
+    fun retrieveRepositoriesByUsername(
+        username: String
+    ): RepositoryModel {
+        val repositoryModel = RepositoryModel()
+        val tasks: RealmResults<RepositoryRealm> = realm.query<RepositoryRealm>("username == $0", username).find()
+        val list = ArrayList<RepositoryModelItem>()
+        tasks.forEach { repository ->
+            list.add(
+                RepositoryModelItem(
+                    name = repository.repositoryName,
+                    language = repository.programmingLanguage,
+                    stargazers_count = repository.starCount,
+                    html_url = repository.url,
+                    username = repository.username
                 )
             )
         }

@@ -20,10 +20,6 @@ class ReposViewModel @Inject constructor(private val gitHubApi: GitHubApi) : Vie
     private val repositoryDatabaseOperations = RepositoryDatabaseOperations()
     private var repositoryModel = RepositoryModel()
 
-    init {
-        requestRepositoriesFromDatabase()
-    }
-
     fun requestRepositoriesFromApi(username: String) {
         viewModelScope.launch {
             gitHubApi.getUsersRepos(username).enqueue(object : Callback<RepositoryModel> {
@@ -33,33 +29,34 @@ class ReposViewModel @Inject constructor(private val gitHubApi: GitHubApi) : Vie
                 ) {
                     val repository = response.body()
                     userRepositories.postValue(repository)
-                    if(response.code() == 200){
-                    viewModelScope.launch {
-                        kotlin.runCatching {
-                            for (i in 0 until repository!!.size) {
-                                repositoryDatabaseOperations.updateOrCreateRepository(
-                                    id = i.toString(),
-                                    repositoryName = repository[i].name,
-                                    programmingLanguage = repository[i].language,
-                                    starCount = repository[i].stargazers_count,
-                                    url = repository[i].html_url
-                                )
+                    if (response.code() == 200) {
+                        viewModelScope.launch {
+                            kotlin.runCatching {
+                                for (i in 0 until repository!!.size) {
+                                    repositoryDatabaseOperations.updateOrCreateRepository(
+                                        id = (repositoryDatabaseOperations.retrieveRepositories() + 1).toString(),
+                                        repositoryName = repository[i].name,
+                                        programmingLanguage = repository[i].language,
+                                        starCount = repository[i].stargazers_count,
+                                        url = repository[i].html_url,
+                                        username = username
+                                    )
+                                }
                             }
                         }
-                    }
                     }
                 }
 
                 override fun onFailure(call: Call<RepositoryModel>, t: Throwable) {
-                        requestRepositoriesFromDatabase()
+                    requestRepositoriesFromDatabase(username)
                 }
             })
 
         }
     }
 
-    fun requestRepositoriesFromDatabase() {
-        repositoryModel = repositoryDatabaseOperations.retrieveRepositories()
+    fun requestRepositoriesFromDatabase(username: String) {
+        repositoryModel = repositoryDatabaseOperations.retrieveRepositoriesByUsername(username)
         userRepositories.postValue(repositoryModel)
     }
 
