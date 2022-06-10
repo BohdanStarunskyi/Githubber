@@ -15,7 +15,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(private val gitHubApi: GitHubApi) : ViewModel() {
+class ReposViewModel @Inject constructor(private val gitHubApi: GitHubApi) : ViewModel() {
     private val userRepositories = MutableLiveData<RepositoryModel?>()
     private val repositoryDatabaseOperations = RepositoryDatabaseOperations()
     private var repositoryModel = RepositoryModel()

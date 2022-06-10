@@ -30,12 +30,13 @@ class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi) : View
                 override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
                     val user = response.body()
                     viewModelScope.launch {
-                        if (userDatabaseOperations.retrieveUsers().size == 0) {
-                            insertUser(user)
-                        } else {
-                            updateUser(user)
+                        kotlin.runCatching {
+                            if (userDatabaseOperations.retrieveUsers().size == 0) {
+                                insertUser(user)
+                            } else {
+                                updateUser(user)
+                            }
                         }
-
                         requestUsersFromDatabase()
                     }
                 }

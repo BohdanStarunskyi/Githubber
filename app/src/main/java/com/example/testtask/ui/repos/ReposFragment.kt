@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ReposFragment : Fragment(), ReposOnClick {
     private lateinit var binding: FragmentReposBinding
-    private lateinit var detailViewModel: DetailViewModel
+    private lateinit var reposViewModel: ReposViewModel
     private lateinit var name: String
     private lateinit var avatarUrl: String
 
@@ -27,7 +27,7 @@ class ReposFragment : Fragment(), ReposOnClick {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentReposBinding.inflate(inflater, container, false)
-        detailViewModel = ViewModelProvider(this)[DetailViewModel::class.java]
+        reposViewModel = ViewModelProvider(this)[ReposViewModel::class.java]
         name = arguments?.getSerializable("name") as String
         avatarUrl = arguments?.getSerializable("picture") as String
         return binding.root
@@ -35,7 +35,11 @@ class ReposFragment : Fragment(), ReposOnClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        detailViewModel.requestRepositoriesFromApi(name)
+        try {
+            reposViewModel.requestRepositoriesFromApi(name)
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
         init()
     }
 
@@ -48,7 +52,7 @@ class ReposFragment : Fragment(), ReposOnClick {
             .centerCrop()
             .into(binding.ivProfilePicture)
 
-        detailViewModel.getUserRepositories().observe(viewLifecycleOwner) {
+        reposViewModel.getUserRepositories().observe(viewLifecycleOwner) {
             if (it!!.size != 0) {
                 binding.rvRepos.adapter = ReposRecyclerViewAdapter(it, this)
                 binding.noData.visibility = View.INVISIBLE
