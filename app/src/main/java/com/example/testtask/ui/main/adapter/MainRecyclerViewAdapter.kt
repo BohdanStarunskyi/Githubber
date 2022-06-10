@@ -14,11 +14,12 @@ import com.example.testtask.ui.main.MainFragment
 
 
 class MainRecyclerViewAdapter(
-    private val userModel: UserModel?,
+    userModel: UserModel?,
     private val mainFragment: MainFragment
 ) :
     RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
-    var user = userModel
+    private var user = userModel
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nickname: TextView = view.findViewById(R.id.tv_nickname)
         val profilePicture: ImageView = view.findViewById(R.id.iv_profile_picture)

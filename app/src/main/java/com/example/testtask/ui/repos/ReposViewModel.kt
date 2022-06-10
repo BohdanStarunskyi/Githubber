@@ -34,7 +34,7 @@ class ReposViewModel @Inject constructor(private val gitHubApi: GitHubApi) : Vie
                             kotlin.runCatching {
                                 for (i in 0 until repository!!.size) {
                                     repositoryDatabaseOperations.updateOrCreateRepository(
-                                        id = (repositoryDatabaseOperations.retrieveRepositories() + 1).toString(),
+                                        id = System.currentTimeMillis().toString(),
                                         repositoryName = repository[i].name,
                                         programmingLanguage = repository[i].language,
                                         starCount = repository[i].stargazers_count,

@@ -55,9 +55,13 @@ class ReposFragment : Fragment(), ReposOnClick {
 
         reposViewModel.getUserRepositories().observe(viewLifecycleOwner) {
             it.let {
-                if (it!!.size != 0) {
-                    binding.rvRepos.adapter = ReposRecyclerViewAdapter(it, this)
-                    binding.noData.visibility = View.INVISIBLE
+                try {
+                    if (it!!.size != 0) {
+                        binding.rvRepos.adapter = ReposRecyclerViewAdapter(it, this)
+                        binding.noData.visibility = View.INVISIBLE
+                    }
+                } catch (e: Exception){
+                    e.printStackTrace()
                 }
             }
         }
