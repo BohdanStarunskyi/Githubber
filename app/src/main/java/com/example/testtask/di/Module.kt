@@ -16,7 +16,7 @@ object Module {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): GitHubApi{
+    fun provideRetrofit(): GitHubApi {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

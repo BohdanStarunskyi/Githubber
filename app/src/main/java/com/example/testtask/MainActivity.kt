@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(mHandler, IntentFilter(ACTION))
     }
 
-    class MyBroadcast(private val mainViewModel: MainViewModel): BroadcastReceiver(){
+    class MyBroadcast(private val mainViewModel: MainViewModel) : BroadcastReceiver() {
         override fun onReceive(p0: Context?, p1: Intent?) {
             val userId = p1!!.getStringExtra("userId")!!
             val changesCount = p1.getIntExtra("changesCount", 0)

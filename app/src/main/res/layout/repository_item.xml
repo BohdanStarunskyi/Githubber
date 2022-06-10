@@ -32,9 +32,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/programming_lang_icon"
+                android:id="@+id/iv_programming_lang_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/programming_language"
                 android:src="@drawable/ic_programming_language"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_programming_language"
                 app:layout_constraintEnd_toStartOf="@+id/tv_programming_language"
@@ -42,20 +43,21 @@
                 app:layout_constraintTop_toTopOf="@+id/tv_programming_language" />
 
             <TextView
-                android:layout_marginHorizontal="5dp"
                 android:id="@+id/tv_programming_language"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/programming_lang_placeholder"
                 android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@id/programming_lang_icon"
+                app:layout_constraintStart_toEndOf="@id/iv_programming_lang_icon"
                 app:layout_constraintTop_toBottomOf="@id/tv_repository_name" />
 
             <ImageView
-                android:id="@+id/star_icon"
+                android:id="@+id/iv_star_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/star_count"
                 android:src="@drawable/ic_star"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_star_count"
                 app:layout_constraintEnd_toStartOf="@+id/tv_star_count"

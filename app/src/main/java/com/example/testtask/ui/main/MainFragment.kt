@@ -31,10 +31,10 @@ class MainFragment : Fragment(), MainRVOnClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel.requestUsersFromApi()
-        init()
+        initObservers()
     }
 
-    private fun init() {
+    private fun initObservers() {
         mainViewModel.getUsers().observe(viewLifecycleOwner) {
             if (it!!.size != 0) {
                 binding.rvMainFragment.adapter = MainRecyclerViewAdapter(it, this)

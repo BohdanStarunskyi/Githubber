@@ -21,6 +21,7 @@ class ReposFragment : Fragment(), ReposOnClick {
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var name: String
     private lateinit var avatarUrl: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,14 +41,16 @@ class ReposFragment : Fragment(), ReposOnClick {
 
     private fun init() {
         binding.tvUsername.text = name
+
         Glide.with(requireContext())
             .load(avatarUrl)
             .placeholder(R.drawable.profile_placeeholder)
             .centerCrop()
             .into(binding.ivProfilePicture)
+
         detailViewModel.getUserRepositories().observe(viewLifecycleOwner) {
             if (it!!.size != 0) {
-                binding.rvDetail.adapter = ReposRecyclerViewAdapter(it, this)
+                binding.rvRepos.adapter = ReposRecyclerViewAdapter(it, this)
                 binding.noData.visibility = View.INVISIBLE
             }
         }

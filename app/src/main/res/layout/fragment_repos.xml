@@ -7,17 +7,17 @@
     tools:context=".ui.repos.ReposFragment">
 
     <ProgressBar
-        android:elevation="20dp"
         android:id="@+id/no_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/toolbar"
+        android:id="@+id/cl_toolbar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:elevation="10dp"
@@ -39,6 +39,7 @@
                     android:id="@+id/iv_profile_picture"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    android:contentDescription="@string/profile_picture"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -59,14 +60,14 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_detail"
+        android:id="@+id/rv_repos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/cl_toolbar"
         tools:listitem="@layout/repository_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

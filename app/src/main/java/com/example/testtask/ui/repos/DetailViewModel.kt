@@ -15,7 +15,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(private val gitHubApi: GitHubApi): ViewModel() {
+class DetailViewModel @Inject constructor(private val gitHubApi: GitHubApi) : ViewModel() {
     private val userRepositories = MutableLiveData<RepositoryModel?>()
     private val repositoryDatabaseOperations = RepositoryDatabaseOperations()
     private var repositoryModel = RepositoryModel()
@@ -24,9 +24,9 @@ class DetailViewModel @Inject constructor(private val gitHubApi: GitHubApi): Vie
         requestRepositoriesFromDatabase()
     }
 
-    fun requestRepositoriesFromApi(username: String){
+    fun requestRepositoriesFromApi(username: String) {
         viewModelScope.launch {
-            gitHubApi.getUsersRepos(username).enqueue(object : Callback<RepositoryModel>{
+            gitHubApi.getUsersRepos(username).enqueue(object : Callback<RepositoryModel> {
                 override fun onResponse(
                     call: Call<RepositoryModel>,
                     response: Response<RepositoryModel>
@@ -54,7 +54,7 @@ class DetailViewModel @Inject constructor(private val gitHubApi: GitHubApi): Vie
         }
     }
 
-    suspend fun insertRepository(repository: RepositoryModel?){
+    suspend fun insertRepository(repository: RepositoryModel?) {
         for (i in 0 until repository!!.size) {
             repositoryDatabaseOperations.insertRepository(
                 id = i.toString(),
@@ -66,7 +66,7 @@ class DetailViewModel @Inject constructor(private val gitHubApi: GitHubApi): Vie
         }
     }
 
-    suspend fun updateRepository(repository: RepositoryModel?){
+    suspend fun updateRepository(repository: RepositoryModel?) {
         for (i in 0 until repository!!.size) {
             repositoryDatabaseOperations.updateRepository(
                 id = i.toString(),
@@ -83,7 +83,7 @@ class DetailViewModel @Inject constructor(private val gitHubApi: GitHubApi): Vie
         userRepositories.postValue(repositoryModel)
     }
 
-    fun getUserRepositories():LiveData<RepositoryModel?>{
+    fun getUserRepositories(): LiveData<RepositoryModel?> {
         return userRepositories
     }
 }

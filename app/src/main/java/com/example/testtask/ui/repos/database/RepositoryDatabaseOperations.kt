@@ -9,7 +9,6 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.RealmResults
 
 open class RepositoryDatabaseOperations {
-
     private val config = RealmConfiguration.Builder(schema = setOf(RepositoryRealm::class)).build()
     private val realm = Realm.open(config)
 
@@ -39,7 +38,7 @@ open class RepositoryDatabaseOperations {
         url: String
     ) {
         realm.write {
-            val user: RepositoryRealm? =  query<RepositoryRealm>("id == $0", id).first().find()
+            val user: RepositoryRealm? = query<RepositoryRealm>("id == $0", id).first().find()
             user?.apply {
                 this.repositoryName = repositoryName
                 this.programmingLanguage = programmingLanguage

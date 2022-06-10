@@ -30,9 +30,9 @@ class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi) : View
                 override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
                     val user = response.body()
                     viewModelScope.launch {
-                        if (userDatabaseOperations.retrieveUsers().size == 0){
-                           insertUser(user)
-                        } else{
+                        if (userDatabaseOperations.retrieveUsers().size == 0) {
+                            insertUser(user)
+                        } else {
                             updateUser(user)
                         }
 
@@ -50,7 +50,7 @@ class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi) : View
         }
     }
 
-    suspend fun insertUser(user: UserModel?){
+    suspend fun insertUser(user: UserModel?) {
         for (i in 0 until user!!.size) {
             userDatabaseOperations.insertUser(
                 username = user[i].login,
@@ -60,7 +60,7 @@ class MainViewModel @Inject constructor(private val gitHubApi: GitHubApi) : View
         }
     }
 
-    suspend fun updateUser(user: UserModel?){
+    suspend fun updateUser(user: UserModel?) {
         for (i in 0 until user!!.size) {
             userDatabaseOperations.updateUser(
                 username = user[i].login,

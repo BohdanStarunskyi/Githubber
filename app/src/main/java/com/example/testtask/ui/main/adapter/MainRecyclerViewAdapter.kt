@@ -13,14 +13,17 @@ import com.example.testtask.model.user.UserModel
 import com.example.testtask.ui.main.MainFragment
 
 
-class MainRecyclerViewAdapter (private val userModel: UserModel?, private val mainFragment: MainFragment) :
+class MainRecyclerViewAdapter(
+    private val userModel: UserModel?,
+    private val mainFragment: MainFragment
+) :
     RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nickname: TextView = view.findViewById(R.id.tv_nickname)
         val profilePicture: ImageView = view.findViewById(R.id.iv_profile_picture)
         val redDot: ConstraintLayout = view.findViewById(R.id.red_dot)
-        val redDotText: TextView  = view.findViewById(R.id.red_dot_text)
+        val redDotText: TextView = view.findViewById(R.id.red_dot_text)
     }
 
 
@@ -34,7 +37,7 @@ class MainRecyclerViewAdapter (private val userModel: UserModel?, private val ma
         val avatarUrl = userModel[position].avatar_url
         val id = userModel[position].id
         val changesCount = userModel[position].changesCount
-        if (changesCount != 0){
+        if (changesCount != 0) {
             holder.redDot.visibility = View.VISIBLE
             holder.redDotText.text = changesCount.toString()
         } else

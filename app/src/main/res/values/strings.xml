@@ -7,4 +7,8 @@
     <string name="star_count_placeholder">265</string>
     <string name="programming_lang_placeholder">Kotlin</string>
     <string name="changes_count_placeholder">5</string>
+    <string name="changes_count">changes count</string>
+    <string name="profile_picture">profile picture</string>
+    <string name="programming_language">programming language</string>
+    <string name="star_count">star count</string>
 </resources>

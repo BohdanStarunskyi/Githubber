@@ -19,7 +19,6 @@ private const val CHANNEL_ID = "my_channel"
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
-        val from = message.from
         val data: Map<*, *> = message.data
         Log.e("Message", "Could not parse malformed JSON: \"$data\"")
         if (message.data.isNotEmpty()) {
