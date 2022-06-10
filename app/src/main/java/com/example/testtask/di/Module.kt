@@ -13,7 +13,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object Module {
-    private val realmVersion = 1L
 
     @Provides
     @Singleton

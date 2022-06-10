@@ -1,12 +1,10 @@
 <resources>
-    <string name="app_name">TestTask</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="nickname">Nickname</string>
-    <string name="username">username</string>
-    <string name="repository_name">Repository name</string>
-    <string name="date">07.06.2022</string>
-    <string name="text_placeholder">265</string>
-    <string name="kotlin">Kotlin</string>
-    <string name="number_placeholder">5</string>
+    <string name="app_name">Githubber</string>
+    <string name="nickname_placeholder">Nickname</string>
+    <string name="username_placeholder">Username</string>
+    <string name="repository_name_placeholder">Repository name</string>
+    <string name="date_placeholder">07.06.2022</string>
+    <string name="star_count_placeholder">265</string>
+    <string name="programming_lang_placeholder">Kotlin</string>
+    <string name="changes_count_placeholder">5</string>
 </resources>

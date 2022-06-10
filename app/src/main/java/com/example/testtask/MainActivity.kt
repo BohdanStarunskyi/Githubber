@@ -8,7 +8,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.testtask.ui.main.MainViewModel
-import com.example.testtask.ui.main.UserDatabaseOperations
+import com.example.testtask.ui.main.database.UserDatabaseOperations
 import com.example.testtask.utils.ACTION
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(mHandler, IntentFilter(ACTION))
     }
 
-    class MyBroadcast(val mainViewModel: MainViewModel): BroadcastReceiver(){
+    class MyBroadcast(private val mainViewModel: MainViewModel): BroadcastReceiver(){
         override fun onReceive(p0: Context?, p1: Intent?) {
             val userId = p1!!.getStringExtra("userId")!!
             val changesCount = p1.getIntExtra("changesCount", 0)
@@ -33,6 +33,11 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.requestUsersFromDatabase()
         }
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(mHandler)
     }
 
 }

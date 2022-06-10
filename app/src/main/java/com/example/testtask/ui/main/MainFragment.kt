@@ -30,7 +30,7 @@ class MainFragment : Fragment(), MainRVOnClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainViewModel.getUsersFromApi()
+        mainViewModel.requestUsersFromApi()
         init()
     }
 

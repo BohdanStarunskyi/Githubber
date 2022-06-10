@@ -16,9 +16,9 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.testtask.ui.detail.DetailFragment"
+        android:name="com.example.testtask.ui.repos.ReposFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" >
+        tools:layout="@layout/fragment_repos" >
         <action
             android:id="@+id/action_detailFragment_to_mainFragment"
             app:destination="@id/mainFragment">

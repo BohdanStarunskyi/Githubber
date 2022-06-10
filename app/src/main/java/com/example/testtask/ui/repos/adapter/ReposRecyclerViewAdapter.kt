@@ -1,4 +1,4 @@
-package com.example.testtask.ui.detail.adapter
+package com.example.testtask.ui.repos.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testtask.R
 import com.example.testtask.model.repository.RepositoryModel
-import com.example.testtask.ui.detail.DetailFragment
+import com.example.testtask.ui.repos.ReposFragment
 
-class DetailRecyclerViewAdapter (private val repositoryModel: RepositoryModel?, private val detailFragment: DetailFragment) :
-        RecyclerView.Adapter<DetailRecyclerViewAdapter.ViewHolder>() {
+class ReposRecyclerViewAdapter (private val repositoryModel: RepositoryModel?, private val reposFragment: ReposFragment) :
+        RecyclerView.Adapter<ReposRecyclerViewAdapter.ViewHolder>() {
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val repositoryName: TextView = view.findViewById(R.id.tv_repository_name)
@@ -36,7 +36,7 @@ class DetailRecyclerViewAdapter (private val repositoryModel: RepositoryModel?, 
             else
                 holder.programmingLanguageIcon.visibility = View.VISIBLE
             holder.itemView.setOnClickListener {
-                detailFragment.openUrl(repositoryModel[position].html_url)
+                reposFragment.openUrl(repositoryModel[position].html_url)
             }
         }
 

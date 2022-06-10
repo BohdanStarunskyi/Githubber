@@ -1,4 +1,4 @@
-package com.example.testtask.ui.detail
+package com.example.testtask.ui.repos
 
 import android.content.Intent
 import android.net.Uri
@@ -10,14 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.testtask.R
-import com.example.testtask.databinding.FragmentDetailBinding
-import com.example.testtask.ui.detail.adapter.DetailRecyclerViewAdapter
-import com.example.testtask.ui.detail.interfaces.DetailRVOnClick
+import com.example.testtask.databinding.FragmentReposBinding
+import com.example.testtask.ui.repos.adapter.ReposRecyclerViewAdapter
+import com.example.testtask.ui.repos.interfaces.ReposOnClick
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DetailFragment : Fragment(), DetailRVOnClick {
-    private lateinit var binding: FragmentDetailBinding
+class ReposFragment : Fragment(), ReposOnClick {
+    private lateinit var binding: FragmentReposBinding
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var name: String
     private lateinit var avatarUrl: String
@@ -25,7 +25,7 @@ class DetailFragment : Fragment(), DetailRVOnClick {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentDetailBinding.inflate(inflater, container, false)
+        binding = FragmentReposBinding.inflate(inflater, container, false)
         detailViewModel = ViewModelProvider(this)[DetailViewModel::class.java]
         name = arguments?.getSerializable("name") as String
         avatarUrl = arguments?.getSerializable("picture") as String
@@ -34,7 +34,7 @@ class DetailFragment : Fragment(), DetailRVOnClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        detailViewModel.getRepositoriesFromApi(name)
+        detailViewModel.requestRepositoriesFromApi(name)
         init()
     }
 
@@ -47,7 +47,7 @@ class DetailFragment : Fragment(), DetailRVOnClick {
             .into(binding.ivProfilePicture)
         detailViewModel.getUserRepositories().observe(viewLifecycleOwner) {
             if (it!!.size != 0) {
-                binding.rvDetail.adapter = DetailRecyclerViewAdapter(it, this)
+                binding.rvDetail.adapter = ReposRecyclerViewAdapter(it, this)
                 binding.noData.visibility = View.INVISIBLE
             }
         }

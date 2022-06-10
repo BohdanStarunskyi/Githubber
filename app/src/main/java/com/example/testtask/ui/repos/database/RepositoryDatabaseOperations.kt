@@ -1,4 +1,4 @@
-package com.example.testtask.ui.detail
+package com.example.testtask.ui.repos.database
 
 import com.example.testtask.model.repository.RepositoryModel
 import com.example.testtask.model.repository.RepositoryModelItem
@@ -13,14 +13,14 @@ open class RepositoryDatabaseOperations {
     private val config = RealmConfiguration.Builder(schema = setOf(RepositoryRealm::class)).build()
     private val realm = Realm.open(config)
 
-    fun insertRepository(
+    suspend fun insertRepository(
         id: String,
         repositoryName: String,
         programmingLanguage: String?,
         starCount: Int,
         url: String
     ) {
-        realm.writeBlocking {
+        realm.write {
             copyToRealm(RepositoryRealm().apply {
                 this.id = id
                 this.repositoryName = repositoryName
@@ -31,14 +31,14 @@ open class RepositoryDatabaseOperations {
         }
     }
 
-    fun updateRepository(
+    suspend fun updateRepository(
         id: String,
         repositoryName: String,
         programmingLanguage: String?,
         starCount: Int,
         url: String
     ) {
-        realm.writeBlocking {
+        realm.write {
             val user: RepositoryRealm? =  query<RepositoryRealm>("id == $0", id).first().find()
             user?.apply {
                 this.repositoryName = repositoryName

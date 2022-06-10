@@ -1,4 +1,4 @@
-package com.example.testtask.ui.main
+package com.example.testtask.ui.main.database
 
 
 import com.example.testtask.model.user.UserModel
@@ -14,12 +14,12 @@ class UserDatabaseOperations {
     private val config = RealmConfiguration.Builder(schema = setOf(UserRealm::class)).build()
     private val realm = Realm.open(config)
 
-    fun insertUser(
+    suspend fun insertUser(
         username: String,
         imageUrl: String,
         id: String
     ) {
-        realm.writeBlocking {
+        realm.write {
             copyToRealm(UserRealm().apply {
                 this.id = id
                 this.username = username
@@ -28,12 +28,12 @@ class UserDatabaseOperations {
         }
     }
 
-    fun updateUser(
+    suspend fun updateUser(
         username: String,
         imageUrl: String,
         id: String
     ) {
-        realm.writeBlocking {
+        realm.write {
             val user: UserRealm? = query<UserRealm>("id == $0", id).first().find()
             user?.apply {
                 this.username = username
