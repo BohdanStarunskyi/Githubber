@@ -34,11 +34,12 @@ class ReposViewModel @Inject constructor(private val gitHubApi: GitHubApi) : Vie
                     val repository = response.body()
                     userRepositories.postValue(repository)
                     viewModelScope.launch {
-                        if (repositoryDatabaseOperations.retrieveRepositories().size == 0)
-                            insertRepository(repository)
-                        else
-                            updateRepository(repository)
-
+                        kotlin.runCatching {
+                            if (repositoryDatabaseOperations.retrieveRepositories().size == 0)
+                                insertRepository(repository)
+                            else
+                                updateRepository(repository)
+                        }
                         requestRepositoriesFromDatabase()
                     }
                 }
