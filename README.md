@@ -9,3 +9,4 @@ Technology stack:
 - MVVM architecture
 - Realm Database (Kotlin SDK)
 - Firebase Cloud Messaging
+- Single Activity Pattern
