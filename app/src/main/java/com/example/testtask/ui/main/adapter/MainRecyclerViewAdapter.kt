@@ -58,8 +58,8 @@ class MainRecyclerViewAdapter(
         return user!!.size
     }
 
-    fun updateUsers(userM: UserModel?){
-        user = userM
+    fun updateUsers(updatedUser: UserModel?){
+        user = updatedUser
         this.notifyDataSetChanged()
     }
 }

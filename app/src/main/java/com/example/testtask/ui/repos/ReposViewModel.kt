@@ -28,7 +28,6 @@ class ReposViewModel @Inject constructor(private val gitHubApi: GitHubApi) : Vie
                     response: Response<RepositoryModel>
                 ) {
                     val repository = response.body()
-                    userRepositories.postValue(repository)
                     if (response.code() == 200) {
                         viewModelScope.launch {
                             kotlin.runCatching {
@@ -42,6 +41,7 @@ class ReposViewModel @Inject constructor(private val gitHubApi: GitHubApi) : Vie
                                     )
                                 }
                             }
+                            requestRepositoriesFromDatabase(username)
                         }
                     }
                 }
