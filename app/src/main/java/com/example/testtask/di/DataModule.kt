@@ -1,8 +1,11 @@
 package com.example.testtask.di
 
 import android.content.Context
+import androidx.room.Room
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.testtask.common.Constants
+import com.example.testtask.data.database.AppDatabase
+import com.example.testtask.data.database.DatabaseDao
 import com.example.testtask.data.network.API
 import dagger.Module
 import dagger.Provides
@@ -30,6 +33,23 @@ object DataModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(API::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideRoomDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            Constants.DATABASE
+        )
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Provides
+    fun provideDao(database: AppDatabase): DatabaseDao {
+        return database.databaseDao()
     }
 
 }

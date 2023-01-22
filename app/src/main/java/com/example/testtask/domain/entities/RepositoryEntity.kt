@@ -5,5 +5,6 @@ data class RepositoryEntity(
     var name: String? = null,
     var updatedAt: String? = null,
     var stargazersCount: Int? = null,
-    var language: String? = null
+    var language: String? = null,
+    var repoUrl: String? = null
 )

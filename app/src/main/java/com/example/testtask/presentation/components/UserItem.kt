@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +25,10 @@ import com.example.testtask.domain.entities.UserEntity
 
 @Composable
 fun UserItem(modifier: Modifier, user: UserEntity, onClick: () -> Unit) {
-    Card(modifier.clickable { onClick() }) {
+    Card(
+        modifier.clickable { onClick() },
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
                 modifier = Modifier.size(100.dp),
@@ -48,5 +53,5 @@ fun UserItem(modifier: Modifier, user: UserEntity, onClick: () -> Unit) {
 @Preview(showBackground = true)
 fun UserItemPreview() {
     val user = UserEntity(id = 0, username = "jake", avatarUrl = "https://i.imgur.com/Di7CszA.jpeg")
-    UserItem(Modifier.fillMaxWidth(), user) {}
+    UserItem(modifier = Modifier.fillMaxWidth(), user = user) {}
 }

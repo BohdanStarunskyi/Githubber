@@ -11,22 +11,38 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.testtask.common.Routes
 import com.example.testtask.presentation.components.UserItem
 
 @Composable
-fun UsersScreen(modifier: Modifier, viewModel: UsersViewModel?) {
+fun UsersScreen(modifier: Modifier, viewModel: UsersViewModel?, navController: NavController) {
     LaunchedEffect(Unit) {
         viewModel?.getUsersFromDatabase()
         viewModel?.getUsersFromServer()
     }
     when (val state = viewModel?.usersState?.collectAsState()?.value) {
-        is UsersStates.Loading -> {
-        }
+        is UsersStates.Loading -> {}
         is UsersStates.Success -> {
-            LazyColumn(modifier) {
-                val users = state.users
-                items(users.size) {
-                    UserItem(modifier = Modifier.fillMaxWidth().padding(5.dp), users[it]) {}
+            val users = state.users
+            if (users.isNotEmpty()){
+                LazyColumn(modifier) {
+                    items(users.size) {
+                        val user = users[it]
+                        UserItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp),
+                            user = user
+                        ) {
+                            runCatching {
+                                navController.navigate(
+                                    "${Routes.REPOS.route}?username=${user.username}?ownerId=${user.id}"
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -41,5 +57,5 @@ fun UsersScreen(modifier: Modifier, viewModel: UsersViewModel?) {
 @Composable
 @Preview(showBackground = true)
 fun ReposScreenPreview() {
-    UsersScreen(Modifier.fillMaxSize(), null)
+    UsersScreen(Modifier.fillMaxSize(), null, rememberNavController())
 }

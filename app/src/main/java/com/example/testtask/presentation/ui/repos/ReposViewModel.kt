@@ -15,11 +15,11 @@ class ReposViewModel @Inject constructor(private val useCase: AppUseCaseImpl) : 
     private val _reposState = MutableStateFlow<ReposStates?>(null)
     val reposState = _reposState.asStateFlow()
 
-    fun getReposFromDatabase(username: String) {
+    fun getReposFromDatabase(ownerId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
                 _reposState.emit(ReposStates.Loading(true))
-                useCase.getReposFromDatabase(username)
+                useCase.getReposFromDatabase(ownerId)
             }.onSuccess {
                 _reposState.emit(ReposStates.Success(it))
             }.onFailure {
@@ -28,11 +28,11 @@ class ReposViewModel @Inject constructor(private val useCase: AppUseCaseImpl) : 
         }
     }
 
-    fun getReposFromServer(username: String) {
+    fun getReposFromServer(username: String, ownerId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
                 _reposState.emit(ReposStates.Loading(false))
-                useCase.getReposFromServer(username)
+                useCase.getReposFromServer(username, ownerId)
             }.onSuccess {
                 _reposState.emit(ReposStates.Success(it))
             }.onFailure {

@@ -8,18 +8,24 @@ import javax.inject.Inject
 
 class AppUseCaseImpl @Inject constructor(private val repository: AppRepositoryImpl) : AppUseCase {
     override suspend fun getUsersFromServer(): ArrayList<UserEntity> {
-        return repository.getUsers()
+        val users = repository.getUsersFromServer()
+        if(users.isNotEmpty())
+            repository.saveUsersToDatabase(users)
+        return users
     }
 
-    override suspend fun getReposFromServer(username: String): ArrayList<RepositoryEntity> {
-        TODO("Not yet implemented")
+    override suspend fun getReposFromServer(
+        username: String,
+        ownerId: Int
+    ): ArrayList<RepositoryEntity> {
+        val repos = repository.getUserReposFromServer(username)
+        if(repos.isNotEmpty())
+            repository.saveReposToDatabase(repos, ownerId)
+        return repos
     }
 
-    override suspend fun getUsersFromDatabase(): ArrayList<UserEntity> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getUsersFromDatabase() = repository.getUsersFromDatabase()
 
-    override suspend fun getReposFromDatabase(username: String): ArrayList<RepositoryEntity> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getReposFromDatabase(ownerId: Int) =
+        repository.getUserReposFromDatabase(ownerId)
 }
