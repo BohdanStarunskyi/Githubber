@@ -20,6 +20,15 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file("Githubber.jks")
+            storePassword 'Githubber'
+            keyAlias 'key0'
+            keyPassword 'Githubber'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
