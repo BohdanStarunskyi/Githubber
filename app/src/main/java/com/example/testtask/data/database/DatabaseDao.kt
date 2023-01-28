@@ -19,6 +19,6 @@ interface DatabaseDao {
     @Query("SELECT * FROM ${Constants.USERS_TABLE_NAME}")
     suspend fun getUsers(): List<UserDO>
 
-    @Query("SELECT * FROM ${Constants.REPOSITORIES_TABLE_NAME} WHERE ownerId = :ownerId")
+    @Query("SELECT * FROM ${Constants.REPOSITORIES_TABLE_NAME} WHERE ownerId = :ownerId ORDER BY name")
     suspend fun getUserRepos(ownerId: Int?): List<RepositoryDO>
 }

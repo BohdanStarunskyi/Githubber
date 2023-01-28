@@ -35,22 +35,24 @@ fun RepositoryItem(modifier: Modifier, repositoryEntity: RepositoryEntity, onCli
             )
             Text(
                 text = repositoryEntity.name.toString(),
-                fontSize = 36.sp,
+                fontSize = 28.sp,
                 fontWeight = FontWeight(800),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_programming_language),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = repositoryEntity.language.toString(),
-                    fontSize = 24.sp,
-                    modifier = Modifier.padding(start = 10.dp)
-                )
+            if (repositoryEntity.language != null) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_programming_language),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = repositoryEntity.language.toString(),
+                        fontSize = 24.sp,
+                        modifier = Modifier.padding(start = 10.dp)
+                    )
+                }
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(

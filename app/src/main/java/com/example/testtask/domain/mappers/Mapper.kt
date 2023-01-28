@@ -25,7 +25,7 @@ fun ArrayList<ReposResponse>?.toRepositoryEntityArray(): ArrayList<RepositoryEnt
                 updatedAt = it.updated_at,
                 stargazersCount = it.stargazers_count,
                 language = it.language,
-                repoUrl = it.url
+                repoUrl = it.html_url
             )
         )
     }

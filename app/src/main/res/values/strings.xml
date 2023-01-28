@@ -13,4 +13,5 @@
     <string name="star_count">star count</string>
     <string name="user_image_desc">user image</string>
     <string name="languauge">programming language</string>
+    <string name="check_your_internet_connection">Check your internet connection</string>
 </resources>
