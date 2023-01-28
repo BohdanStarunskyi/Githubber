@@ -4,6 +4,9 @@ Githubber is simple version of a user and repository part of the GitHub app 📱
 It simply loads User and Repository data from API and shows it. Both data will be loaded the following way: loader → data from database → data from API Dummy API is used in this app. 
 The list of users from this request: [https://api.github.com/users](https://api.github.com/users) 
 The user’s repositories from this request: [https://api.github.com/users/{login}/repos](https://api.github.com/users/%7Blogin%7D/repos)
+## Screencast
+[Video](https://youtube.com/shorts/BzYMIB0mojI?feature=share)
+
 ## Screenshots
 ![HomePage](https://user-images.githubusercontent.com/91286770/215276531-31e1ab04-9b3b-4617-abf0-abc2bbaa1026.png)
 ![Repository Page](https://user-images.githubusercontent.com/91286770/215276543-1333e7c1-0830-4dc7-99d6-6edd5a487880.png)
