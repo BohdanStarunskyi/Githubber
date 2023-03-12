@@ -10,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.testtask.common.Routes
+import com.example.testtask.common.constants.Routes
 import com.example.testtask.presentation.theme.ComposeMaterial3Theme
 import com.example.testtask.presentation.ui.repos.ReposScreen
 import com.example.testtask.presentation.ui.users.UsersScreen

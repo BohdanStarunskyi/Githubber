@@ -3,7 +3,7 @@ package com.example.testtask.di
 import android.content.Context
 import androidx.room.Room
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.example.testtask.common.Constants
+import com.example.testtask.common.constants.Constants
 import com.example.testtask.data.database.AppDatabase
 import com.example.testtask.data.database.DatabaseDao
 import com.example.testtask.data.network.API

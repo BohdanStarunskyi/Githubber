@@ -1,7 +1,7 @@
 package com.example.testtask.domain.database_objects
 
 import androidx.room.Entity
-import com.example.testtask.common.Constants
+import com.example.testtask.common.constants.Constants
 
 @Entity(tableName = Constants.REPOSITORIES_TABLE_NAME, primaryKeys = ["ownerId", "id"])
 data class RepositoryDO(

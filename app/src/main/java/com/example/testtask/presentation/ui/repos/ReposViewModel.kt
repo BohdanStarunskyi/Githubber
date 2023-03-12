@@ -1,56 +1,43 @@
 package com.example.testtask.presentation.ui.repos
 
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testtask.data.usecase.AppUseCaseImpl
-import com.example.testtask.domain.entities.RepositoryEntity
-import com.example.testtask.presentation.ui.UiStates
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ReposViewModel @Inject constructor(private val useCase: AppUseCaseImpl) : ViewModel() {
-    private val _reposState = MutableStateFlow<UiStates?>(null)
-    val reposState = _reposState.asStateFlow()
-
-    private val _reposList = mutableStateListOf<RepositoryEntity>()
-    val reposList: List<RepositoryEntity> = _reposList
+    private val _reposState = mutableStateOf(ReposState())
+    val reposState: State<ReposState> = _reposState
 
     fun getReposFromDatabase(ownerId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             runCatching {
-                _reposState.emit(UiStates.Loading)
+                _reposState.value = _reposState.value.copy(isLoading = true)
                 useCase.getReposFromDatabase(ownerId)
             }.onSuccess {
-                _reposState.emit(UiStates.Success)
-                if (it.isNotEmpty()) {
-                    _reposList.clear()
-                    _reposList.addAll(it)
-                }
+                if (it.isNotEmpty())
+                    _reposState.value = ReposState(repos = it)
             }.onFailure {
-                _reposState.emit(UiStates.Error(it))
+                _reposState.value = _reposState.value.copy(error = it.message, isLoading = false)
             }
         }
     }
 
     fun getReposFromServer(username: String, ownerId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             runCatching {
-                _reposState.emit(UiStates.Loading)
+                _reposState.value = _reposState.value.copy(isLoading = true)
                 useCase.getReposFromServer(username, ownerId)
-            }.onSuccess { repos ->
-                _reposState.emit(UiStates.Success)
-                if (repos.isNotEmpty()) {
-                    _reposList.clear()
-                    _reposList.addAll(repos.sortedBy { it.name })
-                }
+            }.onSuccess {
+                if (it.isNotEmpty())
+                    _reposState.value = ReposState(repos = it)
             }.onFailure {
-                _reposState.emit(UiStates.Error(it))
+                _reposState.value = _reposState.value.copy(error = it.message, isLoading = false)
             }
         }
     }

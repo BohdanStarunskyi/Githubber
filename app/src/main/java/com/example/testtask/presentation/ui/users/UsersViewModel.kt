@@ -1,39 +1,30 @@
 package com.example.testtask.presentation.ui.users
 
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testtask.data.usecase.AppUseCaseImpl
-import com.example.testtask.domain.entities.UserEntity
-import com.example.testtask.presentation.ui.UiStates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class UsersViewModel @Inject constructor(private val useCase: AppUseCaseImpl) : ViewModel() {
-    private val _usersState = MutableStateFlow<UiStates?>(null)
-    val usersState = _usersState.asStateFlow()
-
-    private val _userList = mutableStateListOf<UserEntity>()
-    val userList: List<UserEntity> = _userList
+    private val _usersState = mutableStateOf(UsersState())
+    val usersState: State<UsersState> = _usersState
 
     fun getUsersFromDatabase() {
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
-                _usersState.emit(UiStates.Loading)
+                _usersState.value = _usersState.value.copy(isLoading = true)
                 useCase.getUsersFromDatabase()
             }.onSuccess {
-                _usersState.emit(UiStates.Success)
-                if (it.isNotEmpty()) {
-                    _userList.clear()
-                    _userList.addAll(it)
-                }
+                if (it.isNotEmpty())
+                    _usersState.value = UsersState(users = it)
             }.onFailure {
-                _usersState.emit(UiStates.Error(it))
+                _usersState.value = _usersState.value.copy(error = it.message, isLoading = false)
             }
         }
     }
@@ -41,16 +32,13 @@ class UsersViewModel @Inject constructor(private val useCase: AppUseCaseImpl) : 
     fun getUsersFromServer() {
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
-                _usersState.emit(UiStates.Loading)
+                _usersState.value = _usersState.value.copy(isLoading = true)
                 useCase.getUsersFromServer()
             }.onSuccess {
-                _usersState.emit(UiStates.Success)
-                if (it.isNotEmpty()) {
-                    _userList.clear()
-                    _userList.addAll(it)
-                }
+                if (it.isNotEmpty())
+                    _usersState.value = UsersState(users = it)
             }.onFailure {
-                _usersState.emit(UiStates.Error(it))
+                _usersState.value = _usersState.value.copy(error = it.message, isLoading = false)
             }
         }
     }

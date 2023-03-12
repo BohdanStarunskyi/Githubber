@@ -1,12 +1,13 @@
 package com.example.testtask.presentation.ui.users
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,11 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.testtask.R
-import com.example.testtask.common.Routes
+import com.example.testtask.common.constants.Routes
+import com.example.testtask.common.testing.getFakeUsers
 import com.example.testtask.presentation.components.UserItem
-import com.example.testtask.presentation.ui.UiStates
 
 @Composable
 fun UsersScreen(modifier: Modifier, navController: NavController) {
@@ -29,58 +29,54 @@ fun UsersScreen(modifier: Modifier, navController: NavController) {
         viewModel.getUsersFromDatabase()
         viewModel.getUsersFromServer()
     }
-    val shouldBeVisible = remember { mutableStateOf(false) }
-    val users = remember { viewModel.userList }
-    when (val state = viewModel.usersState.collectAsState().value) {
-        is UiStates.Loading -> {
-            if (users.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    CircularProgressIndicator(
-                        Modifier
-                            .size(120.dp)
-                            .align(Alignment.Center)
-                    )
-                }
-                shouldBeVisible.value = false
+    val state = viewModel.usersState.value
+    UsersScreenContent(
+        modifier = modifier,
+        state = state,
+        onUserClicked = { username, id ->
+            runCatching {
+                navController.navigate("${Routes.REPOS.route}?username=${username}?ownerId=${id}")
             }
         }
-        is UiStates.Success -> {
-            shouldBeVisible.value = true
-        }
-        is UiStates.Error -> {
-            if (users.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Text(
-                        text = stringResource(R.string.check_your_internet_connection),
-                        modifier = Modifier.align(Alignment.Center),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 18.sp,
-                        textAlign = TextAlign.Center
-                    )
-                }
-                shouldBeVisible.value = false
-            }
-            Log.e("USERS", state.error.localizedMessage?.toString() ?: "")
-        }
-        else -> {}
-    }
-    if (shouldBeVisible.value) {
-        LazyColumn(modifier) {
-            items(users.size) {
-                runCatching {
-                    val user = users[it]
-                    UserItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(5.dp),
-                        user = user
-                    ) {
-                        navController.navigate(
-                            "${Routes.REPOS.route}?username=${user.username}?ownerId=${user.id}"
-                        )
-                    }
-                }
+    )
+}
 
+@Composable
+fun UsersScreenContent(
+    modifier: Modifier,
+    state: UsersState,
+    onUserClicked: (username: String, id: Int) -> Unit
+) {
+    if (state.isLoading && state.users.isNullOrEmpty()) {
+        Box(modifier) {
+            CircularProgressIndicator(
+                Modifier
+                    .size(120.dp)
+                    .align(Alignment.Center)
+            )
+        }
+    }
+    if (!state.error.isNullOrEmpty() && state.users.isNullOrEmpty()) {
+        Box(modifier) {
+            Text(
+                text = stringResource(R.string.check_your_internet_connection),
+                modifier = Modifier.align(Alignment.Center),
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+
+    LazyColumn(modifier) {
+        items(state.users ?: listOf()) { user ->
+            UserItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                user = user
+            ) {
+                onUserClicked(user.username ?: "", user.id ?: 0)
             }
         }
     }
@@ -88,6 +84,10 @@ fun UsersScreen(modifier: Modifier, navController: NavController) {
 
 @Composable
 @Preview(showBackground = true)
-fun ReposScreenPreview() {
-    UsersScreen(Modifier.fillMaxSize(), rememberNavController())
+fun UsersScreenPreview() {
+    UsersScreenContent(
+        modifier = Modifier.fillMaxSize(),
+        state = UsersState(users = getFakeUsers(10)),
+        onUserClicked = { _, _ -> }
+    )
 }

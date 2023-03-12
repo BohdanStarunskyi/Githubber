@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.testtask.common.Constants
+import com.example.testtask.common.constants.Constants
 import com.example.testtask.domain.database_objects.RepositoryDO
 import com.example.testtask.domain.database_objects.UserDO
 
