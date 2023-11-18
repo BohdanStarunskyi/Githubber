@@ -1,44 +1,71 @@
 package com.example.testtask.presentation.ui.users
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.testtask.data.usecase.AppUseCaseImpl
+import com.example.testtask.common.Response
+import com.example.testtask.domain.entities.UserEntity
+import com.example.testtask.domain.usecase.GetUsersFromDatabaseUseCase
+import com.example.testtask.domain.usecase.GetUsersFromServerUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UsersViewModel @Inject constructor(private val useCase: AppUseCaseImpl) : ViewModel() {
-    private val _usersState = mutableStateOf(UsersState())
-    val usersState: State<UsersState> = _usersState
+class UsersViewModel @Inject constructor(
+    private val getUsersFromDbUseCase: GetUsersFromDatabaseUseCase,
+    private val getUsersFromServerUseCase: GetUsersFromServerUseCase
+) : ViewModel() {
+    private val _usersState = MutableStateFlow<Response<List<UserEntity>>>(Response.Loading())
+    val usersState = _usersState.asStateFlow()
 
-    fun getUsersFromDatabase() {
-        viewModelScope.launch(Dispatchers.IO) {
+    init {
+        getUsersFromDatabase()
+        getUsersFromServer()
+    }
+
+    private fun getUsersFromDatabase() {
+        viewModelScope.launch {
             runCatching {
-                _usersState.value = _usersState.value.copy(isLoading = true)
-                useCase.getUsersFromDatabase()
-            }.onSuccess {
-                if (it.isNotEmpty())
-                    _usersState.value = UsersState(users = it)
-            }.onFailure {
-                _usersState.value = _usersState.value.copy(error = it.message, isLoading = false)
+                if (_usersState.value !is Response.Success) {
+                    _usersState.update {
+                        Response.Loading()
+                    }
+                }
+                getUsersFromDbUseCase()
+            }.onSuccess { users ->
+                if (users.isNotEmpty())
+                    _usersState.update { Response.Success(users) }
+            }.onFailure { error ->
+                if (_usersState.value !is Response.Success) {
+                    _usersState.update {
+                        Response.Error(error.message ?: "")
+                    }
+                }
             }
         }
     }
 
-    fun getUsersFromServer() {
-        viewModelScope.launch(Dispatchers.IO) {
+    private fun getUsersFromServer() {
+        viewModelScope.launch {
             runCatching {
-                _usersState.value = _usersState.value.copy(isLoading = true)
-                useCase.getUsersFromServer()
-            }.onSuccess {
-                if (it.isNotEmpty())
-                    _usersState.value = UsersState(users = it)
-            }.onFailure {
-                _usersState.value = _usersState.value.copy(error = it.message, isLoading = false)
+                if (_usersState.value !is Response.Success) {
+                    _usersState.update {
+                        Response.Loading()
+                    }
+                }
+                getUsersFromServerUseCase()
+            }.onSuccess { users ->
+                if (users.isNotEmpty())
+                    _usersState.update { Response.Success(users) }
+            }.onFailure { error ->
+                if (_usersState.value !is Response.Success) {
+                    _usersState.update {
+                        Response.Error(error.message ?: "")
+                    }
+                }
             }
         }
     }

@@ -24,7 +24,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeMaterial3Theme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = Routes.USERS.route) {
+                NavHost(
+                    navController = navController,
+                    startDestination = Routes.USERS.route
+                ) {
                     composable(Routes.USERS.route) {
                         UsersScreen(
                             modifier = Modifier.fillMaxSize(),
@@ -39,15 +42,7 @@ class MainActivity : ComponentActivity() {
                             navArgument("ownerId") { type = NavType.IntType }
                         )
                     ) {
-                        val username = it.arguments?.getString("username")
-                        val ownerId = it.arguments?.getInt("ownerId")
-                        if (username != null && ownerId != null) {
-                            ReposScreen(
-                                modifier = Modifier.fillMaxSize(),
-                                username = username,
-                                ownerId = ownerId
-                            )
-                        }
+                        ReposScreen(Modifier.fillMaxSize())
                     }
                 }
             }
